@@ -1,20 +1,56 @@
+/*
+ * PiNumber file.txt: Contains series of digits after the decimal point
+ */
 import java.io.*;
+import java.lang.String;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
 class PiNumber {
+    /*
+     * Find the nth number of pi
+     * arguments: nth number (starting from 1), text file containing series of digits after the decimal point of pi number
+     */
+    public static int digitAt(int nth, String pinumber) throws IOException {
+        int i = -1; // digits not found because of being out of range
+
+        FileInputStream input = null;
+        try {
+            input = new FileInputStream(pinumber);
+            BigInteger bd = new BigInteger("0");
+            BigInteger base = new BigInteger("10");
+            int c;
+            int index = 1;
+            while ((c = input.read()) != -1) {
+                if (index == nth) {
+                    i = Integer.parseInt(String.valueOf(c-48));
+                    break;
+                }
+                index++;
+            }
+        }  catch (IOException e) {
+            System.out.println("ERROR: " + e.toString());
+        } catch (Exception e) {
+            System.out.println("ERROR: " + e.toString());
+        }
+        finally {
+           if (input != null) {
+               input.close();
+           }
+       }
+        return i;
+    }
+
     public static void main(String[] args) throws IOException {
         FileInputStream in = null;
         
         try {
-            in = new FileInputStream("pi-billion.txt");
+            in = new FileInputStream("pi-thousand.txt");
             BigInteger bd = new BigInteger("0");
             BigInteger base = new BigInteger("10");
             int c;
 
             System.out.print("Reading pi number from file....\n");
-            c = in.read();
-            bd = bd.add(new BigInteger(String.valueOf(c-48)));
             
             while( (c = in.read()) != -1 ) {                
                 bd = bd.multiply(base);
@@ -25,7 +61,16 @@ class PiNumber {
             if (in != null) {
                 in.close();
             }
-           
         }
+
+        if (args.length == 2) {
+            int i = PiNumber.digitAt(Integer.parseInt(String.valueOf(args[0])), args[1]);
+            System.out.println("\nDigit at " + args[0] + "-th of Pi is " + String.valueOf(i));
+        }
+        else {
+            System.out.println("\n Please rerun with syntax : java PiNumber nth Pi-filename.txt");
+        }
+
+
     }
 }
