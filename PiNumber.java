@@ -55,7 +55,12 @@ class PiNumber {
             
             int c;
             int index = 1;
-            while((c = input.read()) != -1 && index < n_th - 1) {
+            while((c = input.read()) != -1 ) {
+                if (index == n_th) {
+                    bd = bd.multiply(base);
+                    bd = bd.add(new BigInteger(String.valueOf(c-48)));
+                    break;
+                }
                 index++;
             } 
             while ((c = input.read()) != -1) {
@@ -105,14 +110,16 @@ class PiNumber {
 
         if (args.length == 2) {
             int i = PiNumber.digitAt(Integer.parseInt(String.valueOf(args[0])), args[1]);
-            System.out.println("\nDigit at " + args[0] + "-th of Pi is " + String.valueOf(i));
+            System.out.println("\nDigit at " + args[0] + "-th of Pi is " + Integer.toString(i, 10));
+            System.out.println("\nDigit (in binary) at " + args[0] + "-th of Pi is " + Integer.toString(i, 2));
         }
         else if (args.length == 3){
             BigInteger digit_range = PiNumber.digitRange(Integer.parseInt(String.valueOf(args[0])), Integer.parseInt(String.valueOf(args[1])), args[2]);
             System.out.println("\nDigits from " + args[0] + "-th to " + args[1] + "-th is: " + digit_range.toString());
+            System.out.println("\nDigits (in binary) from " + args[0] + "-th to " + args[1] + "-th is: " + digit_range.toString(2));
         }
         else {
-            System.out.println("\n Please rerun with syntax : java PiNumber nth Pi-filename.txt");
+            System.out.println("\n Please rerun with syntax : java PiNumber nth [mth] Pi-filename.txt");
         }
 
 
