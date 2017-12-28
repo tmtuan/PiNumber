@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 
@@ -53,8 +54,11 @@ class MyImageViewer {
             System.out.printf("Byte 0, 1 =Ox%02X%02X - %c%c\n", array[0], array[1], (char)array[0], (char)array[1]);
 
             //file size
-            System.out.printf("Byte 2,3,4,5 = 0x%02X%02X%02X%02X\n", array[2], array[3], array[4], array[5]);
-                
+            byte[] file_size_array = new byte[] { array[5], array[4], array[3], array[2] }; 
+            BigInteger bi_file_size = new BigInteger(file_size_array);
+
+            System.out.printf("Byte 2,3,4,5 = 0x%02X%02X%02X%02X\n", array[5], array[4], array[3], array[2]);
+            System.out.println("File size = " + bi_file_size.toString(10) + " bytes");    
             // Reserved 1
             System.out.printf("Byte 6,7 = 0x%02X%02X\n", array[6], array[7]);
 
